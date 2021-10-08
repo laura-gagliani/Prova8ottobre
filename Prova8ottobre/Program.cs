@@ -33,14 +33,21 @@ namespace Prova8ottobre
 
                 int[] winsAr = Wins(userAr, ar, out int winsCount);
 
-                Console.WriteLine($"\nI tuoi numeri vincenti sono:");
-                for (int k = 0; k < winsAr.Length; k++)
+                if (winsCount == 0)
                 {
-                    if (winsAr[k] != 0)
+                    Console.WriteLine("\nNessuno dei tuoi numeri è stato sorteggiato");
+                }
+                else
+                {
+                    Console.WriteLine($"\nI tuoi numeri vincenti sono:");
+                    for (int k = 0; k < winsAr.Length; k++)
                     {
-                        Console.WriteLine(winsAr[k]);
-                    }
+                        if (winsAr[k] != 0)
+                        {
+                            Console.WriteLine(winsAr[k]);
+                        }
 
+                    }
                 }
 
                 Console.WriteLine("\n" + Result(winsCount));
