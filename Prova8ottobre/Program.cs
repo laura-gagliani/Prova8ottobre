@@ -201,6 +201,10 @@ namespace Prova8ottobre
 
 
             Console.WriteLine($"\nInserisci {dimensUser} numeri interi da 1 a 90, estremi compresi");
+            if(dimensUser == 15)
+            {
+                Console.WriteLine("Ti fermerò automaticamente quando avrai inserito correttamente tutti i numeri");
+            }
             int userNum = VerificaInserimento();
 
             userArray[0] = userNum;
