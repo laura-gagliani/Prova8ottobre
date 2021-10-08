@@ -6,9 +6,13 @@ namespace Prova8ottobre
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Benvenuto a Tombola!");
 
-            int[] ar = RndArrayGen(70);
+            Console.WriteLine("\nScegli il livello di difficoltà:\nfacile\nmedio\ndifficile");
+            int length = ChoseDifficulty();
+
+            
+            int[] ar = RndArrayGen(length);
 
             int[] userAr = UserArray(5);
 
@@ -18,7 +22,26 @@ namespace Prova8ottobre
                 Console.WriteLine(userAr[i]);
             }
 
-            //Console.WriteLine(userAr.Length);
+            Console.WriteLine("\nI numeri estratti dalla tombola sono:");
+            for (int j = 0; j < ar.Length; j++)
+            {
+                Console.WriteLine(ar[j]);
+            }
+
+            int[] winsAr = Wins(userAr, ar, out int winsCount);
+
+            Console.WriteLine($"\nI tuoi numeri vincenti sono:");
+            for (int k = 0; k < winsAr.Length; k++)
+            {
+                if(winsAr[k] != 0)
+                {
+                    Console.WriteLine(winsAr[k]);
+                }
+                
+            }
+
+            Console.WriteLine("\n"+Result(winsCount));
+
         }
 
         private static int[] RndArrayGen(int dimensArray)
@@ -174,6 +197,7 @@ namespace Prova8ottobre
             int[] userWinNums = new int[user.Length];
             winsCount = 0;
             bool found;
+            int toCopy = 0;
 
             for (int i = 0; i < user.Length; i++)
             {
@@ -184,22 +208,52 @@ namespace Prova8ottobre
                     if (user[i] == ai[j])
                     {
                         found = true;
+                        toCopy = ai[j];
+                    }
 
-                    }
-                    if (found)
-                    {
-                        userWinNums[winsCount] = ai[j];
-                        winsCount++;
-                    }
                 }
 
+                if (found)
+                {
+                    userWinNums[winsCount] = toCopy;
+                    winsCount++;
+                }
             }
-
-
-
 
             return userWinNums;
 
+        }
+
+        private static string Result(int winsCount)
+        {
+            string result = null;
+            
+            if (winsCount < 2)
+            {
+                result = "Hai perso...";
+            }
+            else if (winsCount == 2)
+            {
+                result = "Hai fatto ambo!";
+            }
+            else if (winsCount == 3)
+            {
+                result = "Hai fatto terno!";
+            }
+            else if (winsCount == 4)
+            {
+                result = "Hai fatto quaterna!";
+            }
+            else if (winsCount > 4 && winsCount < 15)
+            {
+                result = "Hai fatto cinquina!";
+            }
+            else if (winsCount == 15)
+            {
+                result = "Hai fatto tombola!";
+            }
+
+            return result;
         }
     }
 }
