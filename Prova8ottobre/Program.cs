@@ -6,41 +6,54 @@ namespace Prova8ottobre
     {
         static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Benvenuto a Tombola!");
+            bool playAgain = true;
+            Console.ForegroundColor = ConsoleColor.White;
 
-            Console.WriteLine("\nScegli il livello di difficoltà:\nfacile\nmedio\ndifficile");
-            int length = ChoseDifficulty();
-
-            
-            int[] ar = RndArrayGen(length);
-
-            int[] userAr = UserArray(5);
-
-            Console.WriteLine("\nBene! I numeri che hai scelto sono:");
-            for (int i = 0; i < userAr.Length; i++)
+            do
             {
-                Console.WriteLine(userAr[i]);
-            }
+                int length = ChooseDifficulty();
+                int userArDimension = ChooseNumAmount();
 
-            Console.WriteLine("\nI numeri estratti dalla tombola sono:");
-            for (int j = 0; j < ar.Length; j++)
-            {
-                Console.WriteLine(ar[j]);
-            }
+                int[] ar = RndArrayGen(length);
+                int[] userAr = UserArray(userArDimension);
 
-            int[] winsAr = Wins(userAr, ar, out int winsCount);
-
-            Console.WriteLine($"\nI tuoi numeri vincenti sono:");
-            for (int k = 0; k < winsAr.Length; k++)
-            {
-                if(winsAr[k] != 0)
+                Console.WriteLine("\nBene! I numeri che hai scelto sono:");
+                for (int i = 0; i < userAr.Length; i++)
                 {
-                    Console.WriteLine(winsAr[k]);
+                    Console.WriteLine(userAr[i]);
                 }
-                
-            }
 
-            Console.WriteLine("\n"+Result(winsCount));
+                Console.WriteLine("\nI numeri estratti dalla tombola sono:");
+                for (int j = 0; j < ar.Length; j++)
+                {
+                    Console.WriteLine(ar[j]);
+                }
+
+                int[] winsAr = Wins(userAr, ar, out int winsCount);
+
+                Console.WriteLine($"\nI tuoi numeri vincenti sono:");
+                for (int k = 0; k < winsAr.Length; k++)
+                {
+                    if (winsAr[k] != 0)
+                    {
+                        Console.WriteLine(winsAr[k]);
+                    }
+
+                }
+
+                Console.WriteLine("\n" + Result(winsCount));
+
+                Console.WriteLine("\nVuoi giocare di nuovo? Premi x per giocare ancora, qualsiasi altro tasto per chiudere");
+                char agree = Console.ReadKey().KeyChar;
+                Console.WriteLine("");
+                if (agree != 'x')
+                {
+                    playAgain = false;
+                }
+
+            } while (playAgain);
 
         }
 
@@ -75,13 +88,12 @@ namespace Prova8ottobre
             }
 
             return rndArray;
-        }
+        }  //crea e popola array di numeri estratti
 
-
-        private static int ChoseDifficulty()
+        private static int ChooseDifficulty()
         {
             int length = 0;
-
+            Console.WriteLine("\nScegli il livello di difficoltà:\n-facile\t\t(70 estrazioni)\n-medio\t\t(40 estrazioni)\n-difficile\t(20 estrazioni)\n");
             string difficulty = Console.ReadLine();
             bool correct = false;
 
@@ -124,6 +136,35 @@ namespace Prova8ottobre
             return length;
         }
 
+        private static int ChooseNumAmount()
+        {
+            Console.WriteLine("\nVuoi giocare con 5 o con 15 numeri? Digita sotto il numero scelto");
+            bool isSuccessful = int.TryParse(Console.ReadLine(), out int userArDimension);
+            bool corretto = true;
+
+            if (userArDimension != 5 && userArDimension != 15)
+            {
+                corretto = false;
+
+            }
+
+
+            while (!isSuccessful || !corretto)
+            {
+                Console.WriteLine("\nInserimento errato!");
+                Console.WriteLine("Inserisci un numero corretto");
+                isSuccessful = int.TryParse(Console.ReadLine(), out userArDimension);
+                if (userArDimension == 5 || userArDimension == 15)
+                {
+                    corretto = true;
+
+                }
+            }
+
+
+            return userArDimension;
+        }
+
         private static int VerificaInserimento()
         {
             bool isSuccessful = int.TryParse(Console.ReadLine(), out int userNum);
@@ -138,8 +179,8 @@ namespace Prova8ottobre
 
             while (!isSuccessful || !limCorretti)
             {
-                Console.WriteLine("Inserimento Errato");
-                Console.WriteLine("Reinserisci il numero");
+                Console.WriteLine("Inserimento errato!");
+                Console.WriteLine("Inserisci un numero corretto");
                 isSuccessful = int.TryParse(Console.ReadLine(), out userNum);
                 if (userNum > 0 && userNum < 91)
                 {
@@ -151,15 +192,15 @@ namespace Prova8ottobre
 
             return userNum;
 
-        }
+        }           //controllo per UserArray
 
         private static int[] UserArray(int dimensUser)
         {
-            //dimensUser = 5;
+
             int[] userArray = new int[dimensUser];
 
 
-            Console.WriteLine("\nInserisci un numero intero da 1 a 90 compresi");
+            Console.WriteLine($"\nInserisci {dimensUser} numeri interi da 1 a 90, estremi compresi");
             int userNum = VerificaInserimento();
 
             userArray[0] = userNum;
@@ -190,7 +231,7 @@ namespace Prova8ottobre
 
             return userArray;
 
-        }
+        }       //crea e popola array con numeri inseriti dall'utente
 
         private static int[] Wins(int[] user, int[] ai, out int winsCount)
         {
@@ -222,12 +263,12 @@ namespace Prova8ottobre
 
             return userWinNums;
 
-        }
+        }       //rende array con numeri indovinati + contatore di numeri indovinati
 
         private static string Result(int winsCount)
         {
             string result = null;
-            
+
             if (winsCount < 2)
             {
                 result = "Hai perso...";
@@ -254,6 +295,7 @@ namespace Prova8ottobre
             }
 
             return result;
-        }
+        }   //stabilisce il risultato a seconda del contatore di numeri indovinati
+
     }
 }
